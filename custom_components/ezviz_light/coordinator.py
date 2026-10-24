@@ -22,6 +22,7 @@ from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import DEFAULT_TIMEOUT, DOMAIN, UPDATE_INTERVAL_SECONDS
+from .state import copy_status
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -48,10 +49,12 @@ class EzvizLightCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         """Fetch the latest light bulb status map from the EZVIZ cloud."""
         try:
             async with asyncio.timeout(DEFAULT_TIMEOUT):
-                return await self.hass.async_add_executor_job(
+                bulbs = await self.hass.async_add_executor_job(
                     self.client.load_light_bulbs, True
                 )
         except (EzvizAuthTokenExpired, EzvizAuthVerificationCode) as err:
             raise ConfigEntryAuthFailed from err
         except (InvalidURL, HTTPError, PyEzvizError) as err:
             raise UpdateFailed(f"Error communicating with EZVIZ: {err}") from err
+
+        return {serial: copy_status(status) for serial, status in bulbs.items()}

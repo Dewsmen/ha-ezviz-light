@@ -137,6 +137,33 @@ def test_current_mode_falls_back_for_music_too() -> None:
     assert state.current_color_mode_name(data, supported) == state.COLOR_MODE_COLOR_TEMP
 
 
+def test_copy_status_isolates_optimistic_writes_from_the_library_cache() -> None:
+    # Regression: pyezvizapi hands back its own _light_bulbs cache, and
+    # leaves a device's entry untouched when it fails to rebuild (the
+    # "Load_device_failed: ... msg='featureJson'" case). Optimistic
+    # updates used to be written straight into that cache, so a
+    # fabricated value survived every later poll for as long as the
+    # device kept failing - the bulb showed "off" while physically on,
+    # and no UI action could clear it.
+    library_cache = copy.deepcopy(REAL_RGB_CAPTURE)
+    snapshot = state.copy_status(library_cache)
+
+    # Entity applies an optimistic "off" plus a mode change to its copy.
+    snapshot["is_on"] = False
+    for item in snapshot["featureItems"]:
+        if item["itemKey"] == "light_mode":
+            item["dataValue"] = "white"
+
+    # The library's cache must be untouched, so the next poll still
+    # reports the real state rather than the fabricated one.
+    assert library_cache["is_on"] is True
+    assert state.raw_feature_value(library_cache, "light_mode") == "color"
+
+
+def test_copy_status_without_feature_items() -> None:
+    assert state.copy_status({"is_on": True}) == {"is_on": True}
+
+
 def test_plan_writes_skips_power_when_already_on() -> None:
     # Adjusting an already-on bulb shouldn't spend a round trip re-sending
     # light_switch=True - that was doubling the latency of every drag.

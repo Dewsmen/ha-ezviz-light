@@ -134,6 +134,31 @@ def color_temp_kelvin(data: dict[str, Any], color_mode: str) -> int | None:
     return max(low, min(high, int(raw)))
 
 
+def copy_status(status: dict[str, Any]) -> dict[str, Any]:
+    """Detach one bulb's status from pyezvizapi's internal cache.
+
+    load_light_bulbs() hands back the library's own _light_bulbs dict,
+    which it mutates in place and never prunes: when a device fails to
+    build (e.g. KeyError 'featureJson' on a partial payload, logged as
+    "Load_device_failed") it simply leaves the previous entry untouched.
+
+    Without this copy, the entity's optimistic updates wrote straight
+    into that cache, so a fabricated value survived every subsequent poll
+    for as long as the device kept failing - leaving the UI stuck on a
+    state no action could clear. Copying means an optimistic value lives
+    at most until the next poll, after which the last real cloud state
+    wins again. featureItems is copied too, since color_rgb and
+    light_mode are patched inside it.
+    """
+    copied = dict(status)
+    items = status.get("featureItems")
+    if isinstance(items, list):
+        copied["featureItems"] = [
+            dict(item) if isinstance(item, dict) else item for item in items
+        ]
+    return copied
+
+
 def current_feature_value(data: dict[str, Any], item_key: str) -> Any:
     """Return the currently known value for a feature key."""
     field = FEATURE_TO_STATUS_FIELD.get(item_key)
