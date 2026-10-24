@@ -27,6 +27,7 @@ from . import state
 from .brightness import EZVIZ_BRIGHTNESS_MAX, ezviz_to_ha_brightness, ha_to_ezviz_brightness
 from .color import raw_feature_value, rgb_to_hex
 from .const import (
+    DEVICE_STATUS_OFFLINE,
     DOMAIN,
     FEATURE_KEY_BRIGHTNESS,
     FEATURE_KEY_COLOR_RGB,
@@ -130,8 +131,20 @@ class EzvizLightBulbEntity(CoordinatorEntity[EzvizLightCoordinator], LightEntity
 
     @property
     def available(self) -> bool:
-        """Entity is unavailable once its serial drops out of a refresh."""
-        return super().available and self._serial in self.coordinator.data
+        """Unavailable if the poll failed, the serial vanished, or EZVIZ says it's offline.
+
+        The offline check matters: while a bulb is unreachable the cloud
+        keeps serving its last known state, so without this the entity
+        shows a confident on/off value that may be wrong and that no UI
+        action can correct - the toggle derives its intent from that same
+        stale value, so it keeps sending the wrong command. Missing status
+        is treated as online, since not every payload carries the field.
+        """
+        return (
+            super().available
+            and self._serial in self.coordinator.data
+            and self._data.get("status") != DEVICE_STATUS_OFFLINE
+        )
 
     @property
     def is_on(self) -> bool:
@@ -167,6 +180,12 @@ class EzvizLightBulbEntity(CoordinatorEntity[EzvizLightCoordinator], LightEntity
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
         return {
+            # Diagnostics for on/off desync: what the cloud claims the
+            # switch is, and whether it considers the bulb reachable.
+            "ezviz_light_switch_raw": raw_feature_value(
+                self._data, FEATURE_KEY_LIGHT_SWITCH
+            ),
+            "ezviz_device_status_raw": self._data.get("status"),
             "ezviz_light_mode_raw": raw_feature_value(self._data, FEATURE_KEY_LIGHT_MODE),
             "ezviz_color_temperature_raw": self._data.get("color_temperature"),
             "ezviz_color_rgb_raw": raw_feature_value(self._data, FEATURE_KEY_COLOR_RGB),

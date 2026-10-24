@@ -13,6 +13,12 @@ OPTION_CUSTOM_URL = "custom"
 DEFAULT_TIMEOUT = 25
 UPDATE_INTERVAL_SECONDS = 30
 
+# deviceInfos.status value meaning "offline" - same convention HA core's
+# ezviz integration uses. While a bulb is offline the cloud keeps serving
+# its last known state, so trusting is_on then shows a confident (and
+# unfixable) wrong value instead of admitting we can't reach it.
+DEVICE_STATUS_OFFLINE = 2
+
 # LB1-Color's CCT range - only a fallback now; state.py prefers the
 # device's own reported range via dataDesc, confirmed live to be exactly
 # this (literal Kelvin, "unit": "k"). LB1-White has no color_temperature
