@@ -1,0 +1,45 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect your EZVIZ account",
+        "description": "Enter the EZVIZ cloud account credentials used to pair your bulb in the EZVIZ app.",
+        "data": {
+          "username": "Username",
+          "password": "Password",
+          "url": "Region"
+        }
+      },
+      "custom_url": {
+        "title": "Custom EZVIZ API URL",
+        "data": {
+          "url": "API URL"
+        }
+      },
+      "mfa_code": {
+        "title": "Verification code",
+        "description": "Enter the verification code sent to your EZVIZ account.",
+        "data": {
+          "code": "Code"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Reauthenticate EZVIZ",
+        "description": "The session for {username} has expired. Enter your password again.",
+        "data": {
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Could not connect to the EZVIZ API URL.",
+      "invalid_host": "Invalid EZVIZ API URL.",
+      "invalid_auth": "Invalid username or password.",
+      "unknown": "Unexpected error."
+    },
+    "abort": {
+      "already_configured": "This account is already configured.",
+      "reauth_successful": "Reauthentication was successful."
+    }
+  }
+}

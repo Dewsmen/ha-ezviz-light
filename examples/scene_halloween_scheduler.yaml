@@ -1,0 +1,205 @@
+min_color_temp_kelvin: 2700
+max_color_temp_kelvin: 6500
+supported_color_modes:
+  - color_temp
+  - rgb
+color_mode: color_temp
+brightness: 255
+color_temp_kelvin: 6500
+hs_color:
+  - 49.231
+  - 1.944
+rgb_color:
+  - 255
+  - 254
+  - 250
+xy_color:
+  - 0.326
+  - 0.333
+ezviz_light_mode_raw: scene
+ezviz_color_temperature_raw: 6500
+ezviz_color_rgb_raw: '#FF4801'
+ezviz_feature_items_raw:
+  - dataDesc: '["type1","type2"]'
+    dataType: json
+    dataValue:
+      - '1'
+    itemKey: support_net_type
+    itemName: 配网类型
+    transportType: rw
+    visible: 1
+  - dataDesc: '["white", "color", "scene","music"]'
+    dataType: enum
+    dataValue: scene
+    itemKey: light_mode
+    itemName: 亮灯模式
+    transportType: rw
+    visible: 1
+  - dataDesc: ''
+    dataType: bool
+    itemKey: restart
+    itemName: 重启操作
+    transportType: rw
+    visible: 0
+  - dataDesc: >-
+      {"range_from": 2700, "range_to": 6500, "interval": 10, "multiple": 0,
+      "unit": "k"}
+    dataType: num
+    dataValue: 6500
+    itemKey: color_temperature
+    itemName: 色温
+    transportType: rw
+    visible: 1
+  - dataDesc: '{"max_length": 255}'
+    dataType: char
+    dataValue: '#FF4801'
+    itemKey: color_rgb
+    itemName: 彩光
+    transportType: rw
+    visible: 1
+  - dataDesc: '{"enable": false}'
+    dataType: json
+    itemKey: countdown_query
+    itemName: 查询 倒计时
+    transportType: rw
+    visible: 1
+  - dataDesc: >-
+      {"range_from": 60, "range_to": 86400, "interval": 1, "multiple": 0,
+      "unit": "second"}
+    dataType: num
+    itemKey: countdown_on_enable
+    itemName: 倒计时-开
+    transportType: rw
+    visible: 1
+  - dataDesc: '[{"k":"sleep","t":"color","stat":[{"id":1,"b":100,"c":"#FFFFFF","t":4000}],"trans":{"low":1,"dura":1000},"speed":1000}]'
+    dataType: json
+    dataValue: []
+    itemKey: scene_conf
+    itemName: 场景配置
+    transportType: rw
+    visible: 1
+  - dataDesc: '{"daylightSavingTime":0,"timeZone":"","timeFormat":0 ,"tzCode":0 }'
+    dataType: json
+    dataValue:
+      endWeekDay: '7'
+      offsetTime: 60
+      endWeekIndex: '99'
+      startMonth: 3
+      startDay: 0
+      timeZone: UTC+01:00
+      timeFormat: '0'
+      daylightSavingTime: 1
+      startWeekIndex: '99'
+      endDay: 0
+      tzCode: 130
+      startWeekDay: '7'
+      startTime: '02:00'
+      endTime: '03:00'
+      endMonth: 10
+    itemKey: timezone_setting
+    itemName: 时区设置
+    transportType: rw
+    visible: 1
+  - dataDesc: >-
+      {"range_from": 60, "range_to": 86400, "interval": 1, "multiple": 0,
+      "unit": "second"}
+    dataType: num
+    itemKey: countdown_off_enable
+    itemName: 倒计时-关
+    transportType: rw
+    visible: 1
+  - dataDesc: ''
+    dataType: bool
+    itemKey: countdown_off_disable
+    itemName: 停止 倒计时-关
+    transportType: rw
+    visible: 1
+  - dataDesc: '{"k":"sleep","t":"color","stat":[{"id":1,"b":100,"c":"#FFFFFF","t":4000}],"trans":{"low":1,"dura":1000},"speed":1000}'
+    dataType: json
+    dataValue:
+      stat:
+        - b: 100
+          c: '#FF4D00'
+          t: 4000
+          m: color
+        - b: 80
+          c: '#FFFF00'
+          t: 4000
+          m: color
+      k: halloween
+      speed: 500
+      trans:
+        low: 1
+        dura: 50
+    itemKey: scene
+    itemName: 场景状态
+    transportType: rw
+    visible: 1
+  - dataDesc: ''
+    dataType: bool
+    dataValue: true
+    itemKey: light_switch
+    itemName: 开关
+    transportType: rw
+    visible: 1
+  - dataDesc: '["e1", "e2", "e3"]'
+    dataType: fault
+    itemKey: common_fault
+    itemName: 默认错误类型
+    transportType: rw
+    visible: 0
+  - dataDesc: >-
+      {"range_from": 1, "range_to": 100, "interval": 1, "multiple": 0, "unit":
+      ""}
+    dataType: num
+    dataValue: 100
+    itemKey: brightness
+    itemName: 亮度
+    transportType: rw
+    visible: 1
+  - dataDesc: ''
+    dataType: bool
+    itemKey: countdown_on_disable
+    itemName: 停止 倒计时-开
+    transportType: rw
+    visible: 1
+  - dataDesc: '["0","1"]'
+    dataType: enum
+    itemKey: reset
+    itemName: 重置操作
+    transportType: rw
+    visible: 0
+  - dataDesc: >-
+      {"range_from": 1, "range_to": 60, "interval": 1, "multiple": 0, "unit":
+      "minute"}
+    dataType: json
+    itemKey: countdown_on
+    itemName: 倒计时开
+    transportType: rw
+    visible: 1
+  - dataDesc: >-
+      {"range_from": 1, "range_to": 60, "interval": 1, "multiple": 0, "unit":
+      "minute"}
+    dataType: num
+    itemKey: countdown_off
+    itemName: 倒计时-关
+    transportType: rw
+    visible: 0
+  - dataDesc: >-
+      [{"startTime":"06:00", "endTime":"10:00", "enable":0,"action":"on",
+      "weekDays":"0,1,2,3,4,5,6"}]
+    dataType: json
+    dataValue:
+      - t: 0
+        weekDays: 2,3,4,5,6
+        enable: 1
+        action: 'on'
+        startTime: '08:00'
+        endTime: '08:00'
+        'n': My scheduler
+    itemKey: plan
+    itemName: 定时计划
+    transportType: rw
+    visible: 1
+friendly_name: LB1(XXXXXXXXX)
+supported_features: 0
